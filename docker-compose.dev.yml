@@ -1,0 +1,20 @@
+version : "4.4"
+
+services:
+  api : 
+    build : 
+      context : .
+      target : development
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/to-do-list
+    volumes : 
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports : 
+      - 4500:4500
+    command : npm run dev
+
+  mongodb-todolist:
+      image: mongo
+      ports:
+        - "27017:27017"

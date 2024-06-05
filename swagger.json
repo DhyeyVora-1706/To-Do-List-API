@@ -1,0 +1,237 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "description": "To-Do List",
+        "title": "To-Do List"
+    },
+    "host": "localhost:4500",
+    "securityDefinitions":{
+        "JWT":{
+            "in":"header",
+            "name":"Authorization",
+            "type":"apiKey"
+        }
+    },
+    "paths": {
+        "/api/users/signUp": {
+            "post": {
+                "summary": "To register a new user",
+                "description": "To register a new User",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "desc": "User Credentials",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/api/users/logIn": {
+            "post": {
+                "summary": "Log In to portal",
+                "description": "Log In to portal",
+                "parameters": [
+                    {
+                    "in": "body",
+                    "name": "body",
+                    "desc": "User Credentials",
+                    "schema": {
+                        "type": "object",
+                         "properties": {
+                            "email": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "404" : {
+                        "description":"Incorrect Credentials"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/api/tasks/addTask":{
+            "post":{
+                "summary": "Add new Task",
+                "description": "Add new Task",
+                "security":[{"JWT":{}}],
+                "parameters": [
+                    {
+                    "in": "body",
+                    "name": "body",
+                    "desc": "User Credentials",
+                    "schema": {
+                        "type": "object",
+                         "properties": {
+                            "task": {
+                                "type": "string"
+                            },
+                            "completed": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                }
+            ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401" : {
+                        "description":"Unauthorized"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/api/Tasks/updateTask/{taskId}":{
+            "put":{
+                "summary":"To Update a Particular Task",
+                "description":"To Update a particular Task",
+                "security":[{"JWT":{}}],
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "taskId",
+                        "required": true,
+                        "type": "string",
+                        "description": "The Id of task to be updated"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "Updated Task Information",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "task": {
+                                    "type": "string"
+                                },
+                                "completed": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "404" : {
+                        "description":"TaskId is Invalid"
+                    },
+                    "401":{
+                        "description":"Unauthorized"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/api/Tasks/deleteTask/{taskId}":{
+            "delete":{
+                "summary":"To Delete a Particular Task",
+                "description":"To Delete a particular Task",
+                "security":[{"JWT":{}}],
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "taskId",
+                        "required": true,
+                        "type": "string",
+                        "description": "The Id of task to be deleted"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "404" : {
+                        "description":"TaskId is Invalid"
+                    },
+                    "400":{
+                        "description":"You can only update Task which you have created"
+                    },
+                    "401":{
+                        "description":"Unauthorized"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/api/Tasks/getTask/{taskId}":{
+            "get":{
+                "summary":"To get a Particular Task",
+                "description":"To get a particular Task",
+                "security":[{"JWT":{}}],
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "taskId",
+                        "required": true,
+                        "type": "string",
+                        "description": "The Id of task to be retrieved"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "404" : {
+                        "description":"TaskId is Invalid"
+                    },
+                    "400":{
+                        "description":"You can't view tasks you have not created"
+                    },
+                    "401":{
+                        "description":"Unauthorized"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        }
+    }
+}
